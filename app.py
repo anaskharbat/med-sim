@@ -1,6 +1,30 @@
 # app.py — Outil « produits similaires » (MA) en local
 # Streamlit UI + moteur simple de similarité par règles
 # Dépendances: streamlit, pandas, rapidfuzz
+# --- Gestion du module rapidfuzz (fallback automatique) ---
+try:
+    from rapidfuzz import process, fuzz
+    HAVE_RAPIDFUZZ = True
+except Exception:
+    import difflib
+    HAVE_RAPIDFUZZ = False
+
+    class _FuzzWrap:
+        WRatio = None  # placeholder
+
+    class _ProcessWrap:
+        @staticmethod
+        def extractOne(query, choices, scorer=None):
+            """Fallback de similarité avec difflib (standard Python)."""
+            if not choices:
+                return None
+            match = difflib.get_close_matches(query, choices, n=1, cutoff=0)
+            if match:
+                return (match[0], 100, 0)
+            return None
+
+    process = _ProcessWrap()
+    fuzz = _FuzzWrap()
 
 import re
 import unicodedata
@@ -291,3 +315,4 @@ else:
     )
     if suggestions:
         st.info("Exemples : " + " • ".join(suggestions))
+

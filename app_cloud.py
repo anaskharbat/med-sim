@@ -33,8 +33,8 @@ except Exception:
     fuzz = _FuzzWrap()
 
 st.set_page_config(
-    page_title="Similaires Médicaments - Maroc",
-    page_icon="💊",
+    page_title=" Simili Médicaments — LUNA",
+    page_icon="🌙",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -180,7 +180,7 @@ def group_similars(df: pd.DataFrame, ref: pd.Series) -> dict:
         tiers[k] = sorted(tiers[k], key=sort_key)
     return tiers
 
-st.title("💊 Similaires Médicaments — Maroc (demo cloud-robuste)")
+st.title("💊🌙 Simili Médicaments — test Anas")
 DEFAULT_CSV = "data_full.csv"
 csv_exists = Path(DEFAULT_CSV).exists()
 
